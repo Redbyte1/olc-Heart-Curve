@@ -17,35 +17,42 @@ public:
 	}
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		Clear(olc::BLACK);
 		if (a < 3.14159*2)
 		{
-			float x = r * 16 * std::pow(std::sin(a), 3) + (ScreenWidth() / 2);
-			float y = -r * (13 * std::cos(a) - 5 * std::cos(2 * a) - 2 * std::cos(3 * a) - std::cos(4 * a)) + (ScreenHeight() / 2);
+			float x = 16 * std::pow(std::sin(a), 3);
+			float y = (13 * std::cos(a) - 5 * std::cos(2 * a) - 2 * std::cos(3 * a) - std::cos(4 * a));
 			vectors.push_back(std::make_pair(x, y));
 			a += 0.01;
 		}
 		else
 		{
-			/*if (r < 8.5f && upDown == false)
+			if (r < 7.5f && upDown == false)
 			{
-				r += 0.01f;
+				r += 0.03f;
 				upDown = false;
 			}
-			else if (r > 8.5f || upDown == true)
+			else if (r > 7.5f || upDown == true)
 			{
 				if (r < 5.0f)
 				{
 					r = 5.0f;
 					upDown = false;
 				}
-				r -= 0.01f;
-				upDown = true;
-			}*/
+				else
+				{
+					r -= 0.03f;
+					upDown = true;
+
+				}
+			}
 			
 		}	
 		for (auto& vector : vectors)
 		{
-			Draw(vector.first, vector.second);
+			float nX = r * vector.first + (ScreenHeight() / 2);
+			float nY = -r * vector.second + (ScreenHeight() / 2);
+			Draw(nX, nY);
 		}
 
 		return true;
