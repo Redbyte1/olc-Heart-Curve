@@ -1,4 +1,4 @@
 vc140.pdb
-/obj/Win32/Debug
-/bin/Debug/Win32
-/.vs/OLC Heartcurve/v16
+/.vs/**
+/obj/**
+/bin/**
