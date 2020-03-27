@@ -17,21 +17,43 @@ public:
 	}
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		// called once per frame, draws random coloured pixels
-		/*for (int x = 0; x < ScreenWidth(); x++)
-			for (int y = 0; y < ScreenHeight(); y++)
-				Draw(x, y, olc::Pixel(rand() % 255, rand() % 255, rand()% 255));
-		return true;*/
-		for (float a = 0 ; a < 3.14159*2; a+=0.01)
+		if (a < 3.14159*2)
 		{
-			float r = 5;
 			float x = r * 16 * std::pow(std::sin(a), 3) + (ScreenWidth() / 2);
 			float y = -r * (13 * std::cos(a) - 5 * std::cos(2 * a) - 2 * std::cos(3 * a) - std::cos(4 * a)) + (ScreenHeight() / 2);
-			Draw(x, y);
+			vectors.push_back(std::make_pair(x, y));
+			a += 0.01;
 		}
-		
+		else
+		{
+			/*if (r < 8.5f && upDown == false)
+			{
+				r += 0.01f;
+				upDown = false;
+			}
+			else if (r > 8.5f || upDown == true)
+			{
+				if (r < 5.0f)
+				{
+					r = 5.0f;
+					upDown = false;
+				}
+				r -= 0.01f;
+				upDown = true;
+			}*/
+			
+		}	
+		for (auto& vector : vectors)
+		{
+			Draw(vector.first, vector.second);
+		}
+
 		return true;
 	}
+	float r = 5.0f;
+	bool upDown = false;
+	float a = 0.0f;
+	std::vector<std::pair<float,float>> vectors;
 };
 int main()
 {
