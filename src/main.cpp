@@ -1,7 +1,6 @@
 #include "pch.h"
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
-// Override base class with your custom functionality
 class HeartCurve : public olc::PixelGameEngine
 {
 public:
@@ -12,60 +11,70 @@ public:
 public:
 	bool OnUserCreate() override
 	{
-		// Called once at the start, so create things here
 		return true;
 	}
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		//paint background black again to clear old frames
 		Clear(olc::BLACK);
+		//animation loop
 		if (a < 3.14159*2)
 		{
+			//magic math
 			float x = 16 * std::pow(std::sin(a), 3);
 			float y = (13 * std::cos(a) - 5 * std::cos(2 * a) - 2 * std::cos(3 * a) - std::cos(4 * a));
+			//save incremental steps for time based drawing
 			vectors.push_back(std::make_pair(x, y));
+			//step speed
 			a += 0.01;
 		}
+		//after completeing animation begin beating animation
 		else
 		{
-			if (r < 7.5f && upDown == false)
+			if (radius < thresholdMax && directionSwap == false)
 			{
-				r += 0.03f;
-				upDown = false;
+				radius += speed;
+				directionSwap = false;
 			}
-			else if (r > 7.5f || upDown == true)
+			else if (radius > thresholdMax || directionSwap == true)
 			{
-				if (r < 5.0f)
+				if (radius < thresholdMin)
 				{
-					r = 5.0f;
-					upDown = false;
+					radius = thresholdMin;
+					directionSwap = false;
 				}
 				else
 				{
-					r -= 0.03f;
-					upDown = true;
-
+					radius -= speed;
+					directionSwap = true;
 				}
 			}
 			
-		}	
+		}
+		//for each pair of vectors draw a point
 		for (auto& vector : vectors)
 		{
-			float nX = r * vector.first + (ScreenHeight() / 2);
-			float nY = -r * vector.second + (ScreenHeight() / 2);
+			float nX = radius * vector.first + (ScreenHeight() / 2);
+			float nY = -radius * vector.second + (ScreenHeight() / 2);
 			Draw(nX, nY);
 		}
 
 		return true;
 	}
-	float r = 5.0f;
-	bool upDown = false;
+	//variables for modifiying behaviour
+#define multiplier 1
+	float radius = 5.0f * multiplier;
+	float thresholdMin = 5.0f * multiplier;
+	float thresholdMax = 7.5f * multiplier;
+	float speed = 0.03f * multiplier;
+	bool directionSwap = false;
 	float a = 0.0f;
 	std::vector<std::pair<float,float>> vectors;
 };
 int main()
 {
 	HeartCurve heartCurve;
-	if (heartCurve.Construct(256, 240, 4, 4))
+	if (heartCurve.Construct(256, 256, 2, 2, false, true))
 		heartCurve.Start();
 	return 0;
 }
