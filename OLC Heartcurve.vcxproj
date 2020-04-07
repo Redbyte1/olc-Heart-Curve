@@ -156,6 +156,9 @@
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENCE.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
