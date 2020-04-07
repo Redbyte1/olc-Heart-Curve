@@ -18,7 +18,7 @@ public:
 		//paint background black again to clear old frames
 		Clear(olc::BLACK);
 		//animation loop
-		if (a < 3.14159*2)
+		if (a < M_PI * 2)
 		{
 			//magic math
 			float x = 16 * std::pow(std::sin(a), 3);
@@ -52,17 +52,37 @@ public:
 			
 		}
 		//for each pair of vectors draw a point
-		for (auto& vector : vectors)
+		for (int i = 0; i < vectors.size() - 1; i++)
 		{
-			float nX = radius * vector.first + (ScreenHeight() / 2);
-			float nY = -radius * vector.second + (ScreenHeight() / 2);
-			Draw(nX, nY);
+			olc::vi2d vector1;
+			olc::vi2d vector2;
+
+			float nX = radius * vectors[i].first + (ScreenHeight() / 2);
+			float nY = -radius * vectors[i].second + (ScreenHeight() / 2);
+
+			vector1 = olc::vi2d(nX, nY);
+
+			if (i == vectors.size() - 1)
+			{
+				float nX2 = radius * vectors[0].first + (ScreenHeight() / 2);
+				float nY2 = -radius * vectors[0].second + (ScreenHeight() / 2);
+
+				vector2 = olc::vi2d(nX2, nY2);
+			}
+			else
+			{
+				float nX2 = radius * vectors[i + 1].first + (ScreenHeight() / 2);
+				float nY2 = -radius * vectors[i + 1].second + (ScreenHeight() / 2);
+
+				vector2 = olc::vi2d(nX2, nY2);
+			}
+			DrawLine(vector1, vector2, olc::MAGENTA);
 		}
 
 		return true;
 	}
 	//variables for modifiying behaviour
-#define multiplier 1
+#define multiplier 2
 	float radius = 5.0f * multiplier;
 	float thresholdMin = 5.0f * multiplier;
 	float thresholdMax = 7.5f * multiplier;
@@ -70,11 +90,13 @@ public:
 	bool directionSwap = false;
 	float a = 0.0f;
 	std::vector<std::pair<float,float>> vectors;
+private:
+	
 };
 int main()
 {
 	HeartCurve heartCurve;
-	if (heartCurve.Construct(256, 256, 2, 2, false, true))
+	if (heartCurve.Construct(720, 720, 1, 1, false, true))
 		heartCurve.Start();
 	return 0;
 }
