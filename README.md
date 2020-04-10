@@ -4,3 +4,5 @@ https://thecodingtrain.com/CodingChallenges/134.1-heart-curve.html
 
 It's powered by the OLC PixelGameEngine by Javidx9 just for fun
 https://github.com/OneLoneCoder/olcPixelGameEngine
+
+![](https://i.imgur.com/0X17iCu.png)
